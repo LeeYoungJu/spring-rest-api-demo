@@ -1,5 +1,6 @@
 package com.yjlee.restapidemo.event;
 
+import com.yjlee.restapidemo.accounts.Account;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
+
+    @ManyToOne
+    private Account manager;
 
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRFT;
