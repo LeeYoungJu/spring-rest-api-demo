@@ -1,6 +1,8 @@
 package com.yjlee.restapidemo.event;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yjlee.restapidemo.accounts.Account;
+import com.yjlee.restapidemo.accounts.AccountSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +33,7 @@ public class Event {
     private boolean free;
 
     @ManyToOne
+    @JsonSerialize(using = AccountSerializer.class)
     private Account manager;
 
     @Enumerated(EnumType.STRING)
@@ -39,6 +42,10 @@ public class Event {
     public Event setId(Integer id) {
         this.id = id;
         return this;
+    }
+
+    public boolean isBelongToUser(Account user) {
+        return this.manager.equals(user);
     }
 
     public void update() {
