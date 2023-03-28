@@ -1,5 +1,6 @@
 package com.yjlee.restapidemo.accounts;
 
+import com.yjlee.restapidemo.common.AppProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,22 +24,15 @@ class AccountServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Test
     void findByUsername() {
-        String username = "yjlee@gmail.com";
-        String password = "pass";
-
-        Account account = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                .build();
-        accountService.saveAccount(account);
-
         UserDetailsService userDetailsService = (UserDetailsService) accountService;
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(appProperties.getUserUsername());
 
-        assertTrue(passwordEncoder.matches(password, userDetails.getPassword()));
+        assertTrue(passwordEncoder.matches(appProperties.getUserPassword(), userDetails.getPassword()));
     }
 
     @Test
